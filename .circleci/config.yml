@@ -27,7 +27,7 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y gnupg
             curl -LO https://github.com/mozilla/sops/releases/download/v3.7.3/sops_3.7.3_amd64.deb
-            sudo dpkg -i sops_3.7.1_amd64.deb
+            sudo dpkg -i sops_3.7.3_amd64.deb
 
       - run:
           name: Decrypt AWS Secrets
