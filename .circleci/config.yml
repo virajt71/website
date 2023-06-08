@@ -3,12 +3,21 @@ jobs:
   build:
     docker:
       - image: circleci/python:3.8
+        environment:
+          AWS_DEFAULT_REGION: your-aws-region
 
     steps:
       - checkout
 
       - setup_remote_docker:
           version: 20.10.17
+
+      - run:
+          name: Install AWS CLI
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
 
       - run:
           name: Build and Push Docker Image
