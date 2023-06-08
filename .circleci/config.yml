@@ -3,10 +3,6 @@ jobs:
   build:
     docker:
       - image: circleci/python:3.8
-        environment:
-          AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
-          AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-          AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
 
     steps:
       - checkout
@@ -20,25 +16,6 @@ jobs:
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
-
-      - run:
-          name: Install sops
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y gnupg
-            curl -LO https://github.com/mozilla/sops/releases/download/v3.7.3/sops_3.7.3_amd64.deb
-            sudo dpkg -i sops_3.7.3_amd64.deb
-
-      - run:
-          name: Decrypt AWS Secrets
-          command: sops -d .cricleci/accounts-secrets.yaml
-
-      - run:
-          name: Set AWS Credentials
-          command: |
-            export AWS_ACCESS_KEY_ID=$(cat decrypted-secrets.yaml | yq -r .AWS_ACCESS_KEY_ID)
-            export AWS_SECRET_ACCESS_KEY=$(cat decrypted-secrets.yaml | yq -r .AWS_SECRET_ACCESS_KEY)
-            export AWS_DEFAULT_REGION=$(cat decrypted-secrets.yaml | yq -r .AWS_DEFAULT_REGION)
 
       - run:
           name: Build and Push Docker Image
