@@ -31,7 +31,7 @@ jobs:
 
       - run:
           name: Decrypt AWS Secrets
-          command: sops -d .cricleci/accounts-secrets.yaml > decrypted-secrets.yaml
+          command: sops -d .cricleci/accounts-secrets.yaml
 
       - run:
           name: Set AWS Credentials
