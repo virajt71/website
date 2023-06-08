@@ -24,4 +24,3 @@ jobs:
             docker build -t website_github_cricle-ci .
             docker tag website_github_cricle-ci:latest 327471327668.dkr.ecr.eu-central-1.amazonaws.com/website_github_cricle-ci:latest
             docker push 327471327668.dkr.ecr.eu-central-1.amazonaws.com/website_github_cricle-ci:latest
-
