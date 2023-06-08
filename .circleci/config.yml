@@ -28,9 +28,9 @@ jobs:
       - run:
           name: Set AWS Credentials
           command: |
-            export AWS_ACCESS_KEY_ID=$(cat decrypted-secrets.yaml | yq -r .access_key_id)
-            export AWS_SECRET_ACCESS_KEY=$(cat decrypted-secrets.yaml | yq -r .secret_access_key)
-            export AWS_DEFAULT_REGION=$(cat decrypted-secrets.yaml | yq -r .aws_default_region)
+            export AWS_ACCESS_KEY_ID=$(cat decrypted-secrets.yaml | yq -r .AWS_ACCESS_KEY_ID)
+            export AWS_SECRET_ACCESS_KEY=$(cat decrypted-secrets.yaml | yq -r .AWS_SECRET_ACCESS_KEY)
+            export AWS_DEFAULT_REGION=$(cat decrypted-secrets.yaml | yq -r .AWS_DEFAULT_REGION)
 
       - run:
           name: Build and Push Docker Image
