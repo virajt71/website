@@ -1,0 +1,20 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.8
+
+    steps:
+      - checkout
+
+      - setup_remote_docker:
+          version: 20.10.7
+
+      - run:
+          name: Build and Push Docker Image
+          command: |
+            docker build -t your-image-tag .
+            docker tag your-image-tag:latest your-ecr-repo-url:latest
+            aws ecr get-login-password --region your-aws-region | docker login --username AWS --password-stdin your-ecr-repo-url
+            docker push your-ecr-repo-url:latest
+
