@@ -11,6 +11,5 @@ workflows:
             repo: website_github_cricle-ci 
             setup-remote-docker: true 
             tag: $(TZ="Europe/Warsaw" date '+%Y-%m-%d-%H-%M-%S') 
-            repo-scan-on-push: true 
-            registry-id: ${AWS_ECR_REGISTRY_ID}
+            repo-scan-on-push: true
             push-image: true 
