@@ -1,19 +1,26 @@
 version: 2.1
+orbs:
+  aws-ecr: circleci/aws-ecr@8.2.1
+
 jobs:
   build:
+    parameters:
+      env:
+        type: string
+      docker_cache:
+        type: boolean
+        default: true
+      push_image:
+        type: boolean
+        default: true
     docker:
-      - image: cimg/aws:2023.06
-
+      - image: cimg/aws:2022.10
     steps:
       - checkout
-
-      - setup_remote_docker:
-          version: 20.10.17
-
-      - run:
-          name: Build and Push Docker Image
-          command: |
-            aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 327471327668.dkr.ecr.eu-central-1.amazonaws.com
-            docker build -t website_github_cricle-ci .
-            docker tag website_github_cricle-ci:latest 327471327668.dkr.ecr.eu-central-1.amazonaws.com/website_github_cricle-ci:$(date '+%Y-%m-%d-%H-%M')
-            docker push 327471327668.dkr.ecr.eu-central-1.amazonaws.com/website_github_cricle-ci:$(date '+%Y-%m-%d-%H-%M')
+      - aws-ecr/build-and-push-image:
+          repo: << parameters.env >>-frontend
+          registry-id: AWS_ACCOUNT_ID
+          setup-remote-docker: true
+          tag: "${CIRCLE_SHA1}"
+          remote-docker-layer-caching: << parameters.docker_cache >>
+          push-image: << parameters.push_image >>
