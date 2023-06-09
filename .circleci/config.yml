@@ -8,18 +8,11 @@ jobs:
 
     steps:
       - checkout
-
-      - setup_remote_docker:
-          version: 20.10.17
-
-workflows:
-    example-workflow:
-      jobs:
-        - aws-ecr/build-and-push-image:
-            assume-web-identity: false 
-            aws-cli-version: latest 
-            repo: website_github_cricle-ci 
-            setup-remote-docker: true 
-            tag: $(TZ="Europe/Warsaw" date '+%Y-%m-%d-%H-%M-%S') 
-            repo-scan-on-push: true
-            push-image: true 
+      - aws-ecr/build-and-push-image:
+          assume-web-identity: false 
+          aws-cli-version: latest 
+          repo: website_github_cricle-ci 
+          setup-remote-docker: true 
+          tag: $(TZ="Europe/Warsaw" date '+%Y-%m-%d-%H-%M-%S') 
+          repo-scan-on-push: true
+          push-image: true 
