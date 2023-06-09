@@ -15,5 +15,6 @@ jobs:
           command: |
             aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 327471327668.dkr.ecr.eu-central-1.amazonaws.com
             docker build -t website_github_cricle-ci .
-            docker tag website_github_cricle-ci:latest 327471327668.dkr.ecr.eu-central-1.amazonaws.com/website_github_cricle-ci:$(date '+%Y-%m-%d-%H-%M')
-            docker push 327471327668.dkr.ecr.eu-central-1.amazonaws.com/website_github_cricle-ci:$(date '+%Y-%m-%d-%H-%M')
+            docker tag website_github_cricle-ci:latest 327471327668.dkr.ecr.eu-central-1.amazonaws.com/website_github_cricle-ci:$(TZ="Europe/Warsaw" date '+%Y-%m-%d-%H-%M-%S')
+            docker push 327471327668.dkr.ecr.eu-central-1.amazonaws.com/website_github_cricle-ci:$(TZ="Europe/Warsaw" date '+%Y-%m-%d-%H-%M-%S')
+

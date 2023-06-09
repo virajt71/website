@@ -1,3 +1,5 @@
-FROM httpd:latest
+FROM nginx:latest
 
-COPY ./website /usr/local/apache2/htdocs/
+COPY website /usr/share/nginx/html
+
+EXPOSE 80
