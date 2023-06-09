@@ -12,5 +12,5 @@ workflows:
             setup-remote-docker: true 
             tag: $(TZ="Europe/Warsaw" date '+%Y-%m-%d-%H-%M-%S') 
             repo-scan-on-push: true 
-            registry-id: '327471327668' 
+            registry-id: "327471327668" 
             push-image: true 
