@@ -3,20 +3,24 @@ orbs:
   aws-ecr: circleci/aws-ecr@8.2.1
 
 jobs:
-  build:
-    parameters:
-      docker_cache:
-        type: boolean
-        default: true
-      push_image:
-        type: boolean
-        default: true
-    docker:
-      - image: cimg/aws:2022.10
+  build_and_push_image:
+    executor: aws-ecr/default
     steps:
       - checkout
+      - setup_remote_docker:
+          version: 20.10.17
+      
+      # Build and tag your Docker image
+      - run:
+          name: Build and tag Docker image
+          command: |
+            docker build -t website_github_cricle-ci .
+            docker tag website_github_cricle-ci:latest 327471327668.dkr.ecr.eu-central-1.amazonaws.com/website_github_cricle-ci:latest
+      
+      # Push Docker image to ECR
       - aws-ecr/build-and-push-image:
-          setup-remote-docker: true
-          tag: "${CIRCLE_SHA1}"
-          remote-docker-layer-caching: << parameters.docker_cache >>
-          push-image: << parameters.push_image >>
+          image: website_github_cricle-ci
+          registry-url: 327471327668.dkr.ecr.eu-central-1.amazonaws.com
+          repo: website
+          tag: $(TZ="Europe/Warsaw" date '+%Y-%m-%d-%H-%M-%S')
+
