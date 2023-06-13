@@ -11,6 +11,6 @@ jobs:
           name: Build and Push Docker Image
           command: |
             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 327471327668.dkr.ecr.us-east-1.amazonaws.com
-            docker build -t website_frontend .
-            docker tag website_frontend:latest 327471327668.dkr.ecr.us-east-1.amazonaws.com/website_frontend:latest
-            docker push 327471327668.dkr.ecr.us-east-1.amazonaws.com/website_frontend:latest
+            docker build -t website_frontend:${CIRCLE_SHA1} .
+            docker tag website_frontend:${CIRCLE_SHA1} 327471327668.dkr.ecr.us-east-1.amazonaws.com/website_frontend:${CIRCLE_SHA1}
+            docker push 327471327668.dkr.ecr.us-east-1.amazonaws.com/website_frontend:${CIRCLE_SHA1}
