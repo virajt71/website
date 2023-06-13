@@ -1,26 +1,16 @@
 version: 2.1
-
-orbs:
-  aws-ecr: circleci/aws-ecr@8.2.1
-
 jobs:
   build:
-    parameters:
-      docker_cache:
-        type: boolean
-        default: false
-      push_image:
-        type: boolean
-        default: true
-    executor: aws-ecr/default
+    docker:
+      - image: cimg/aws:2023.06
     steps:
       - checkout
-      - aws-ecr/ecr-login:
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 327471327668.dkr.ecr.us-east-1.amazonaws.com
-      - aws-ecr/build-and-push-image:
-            repo: website_frontend
-            registry-id: 327471327668
-            setup-remote-docker: true
-            tag: '${CIRCLE_SHA1}'
-            remote-docker-layer-caching: << parameters.docker_cache >>
-            push-image: << parameters.push_image >>
+      - setup_remote_docker:
+          version: 20.10.17
+      - run:
+          name: Build and Push Docker Image
+          command: |
+            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 327471327668.dkr.ecr.us-east-1.amazonaws.com
+            docker build -t website_frontend:${CIRCLE_SHA1} .
+            docker tag website_frontend:${CIRCLE_SHA1} 327471327668.dkr.ecr.us-east-1.amazonaws.com/website_frontend:${CIRCLE_SHA1}
+            docker push 327471327668.dkr.ecr.us-east-1.amazonaws.com/website_frontend:${CIRCLE_SHA1}
